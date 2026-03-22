@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI Resume Analyzer</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+    <div class="container">
+        <header>
+            <div class="header-content">
+                <h1>📄 AI Resume Analyzer</h1>
+                <p>Optimize your resume with ATS scoring and skill detection</p>
+            </div>
+        </header>
+
+        <main>
+            <div class="upload-section">
+                <div class="upload-box" id="uploadBox">
+                    <svg class="upload-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
+                        <polyline points="17 8 12 3 7 8"></polyline>
+                        <line x1="12" y1="3" x2="12" y2="15"></line>
+                    </svg>
+                    <h2>Upload Your Resume</h2>
+                    <p>Drag and drop your PDF or click to browse</p>
+                    <input type="file" id="fileInput" accept=".pdf" hidden>
+                    <button class="btn-primary" onclick="document.getElementById('fileInput').click()">
+                        Choose File
+                    </button>
+                    <p class="file-info" id="fileName"></p>
+                </div>
+            </div>
+
+            <div id="results" class="results-section hidden">
+                <div class="score-card">
+                    <div class="score-container">
+                        <svg class="progress-ring" width="120" height="120">
+                            <circle class="progress-ring-circle" cx="60" cy="60" r="54" />
+                        </svg>
+                        <div class="score-text">
+                            <span id="scoreValue" class="score-number">0</span>
+                            <span class="score-percent">%</span>
+                        </div>
+                    </div>
+                    <h3>ATS Score</h3>
+                    <p id="scoreMessage" class="score-message"></p>
+                </div>
+
+                <div class="skills-card">
+                    <h3>✅ Detected Skills</h3>
+                    <div id="skillsList" class="skills-list"></div>
+                </div>
+
+                <button class="btn-secondary" onclick="resetAnalyzer()">
+                    Analyze Another Resume
+                </button>
+            </div>
+
+            <div id="error" class="error-message hidden"></div>
+        </main>
+
+        <footer>
+            <p>&copy; 2026 AI Resume Analyzer | Optimize Your Career Path</p>
+        </footer>
+    </div>
+
+    <script src="{{ url_for('static', filename='script.js') }}"></script>
+</body>
+</html>
