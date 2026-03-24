@@ -1,4 +1,6 @@
 # List of technical and professional skills to search for in resumes
+import re
+
 skills_list = [
     # Programming Languages
     "python", "java", "javascript", "c++", "c#", "php", "ruby", "go", "rust", "kotlin",
@@ -23,7 +25,7 @@ skills_list = [
 # Function to extract skills found in the given text
 def extract_skill(text):
     """
-    Search for skills in the provided text (case-insensitive)
+    Search for skills in the provided text (case-insensitive) using word boundaries
     
     Args:
         text (str): The text to search for skills (usually resume content)
@@ -39,8 +41,10 @@ def extract_skill(text):
     
     # Loop through each skill in our skills list
     for skill in skills_list:
-        # Check if the skill appears in the text (case-insensitive)
-        if skill.lower() in text_lower:
+        # Use word boundary regex to match whole words only
+        # \b ensures we match word boundaries, not substrings
+        pattern = r'\b' + re.escape(skill.lower()) + r'\b'
+        if re.search(pattern, text_lower):
             # Add the skill to the found list
             found.append(skill)
     

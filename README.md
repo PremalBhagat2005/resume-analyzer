@@ -118,7 +118,3 @@ skills_list = [
 - Only PDF files are accepted
 - Resume text is analyzed in lowercase for case-insensitive matching
 - Results are shown instantly without page reload
-
-## License
-
-This project is open source and available under the MIT License.

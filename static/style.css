@@ -5,30 +5,51 @@
 }
 
 :root {
+    /* Light Mode Colors */
     --primary-color: #6366f1;
     --secondary-color: #8b5cf6;
     --success-color: #10b981;
     --warning-color: #f59e0b;
     --danger-color: #ef4444;
-    --dark-bg: #0f172a;
-    --light-bg: #f8fafc;
-    --card-bg: #ffffff;
-    --text-primary: #1e293b;
-    --text-secondary: #64748b;
+    
+    --bg-primary: #ffffff;
+    --bg-secondary: #f8fafc;
+    --bg-tertiary: #f1f5f9;
+    --text-primary: #0f172a;
+    --text-secondary: #475569;
     --border-color: #e2e8f0;
-    --shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-    --shadow-lg: 0 10px 25px rgba(0, 0, 0, 0.1);
+    --shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+    --shadow-md: 0 4px 6px rgba(0, 0, 0, 0.1);
+    --shadow-lg: 0 10px 25px rgba(0, 0, 0, 0.15);
+    
+    --header-bg: linear-gradient(135deg, #6366f1 0%, #8b5cf6 100%);
+}
+
+body.dark-mode {
+    /* Dark Mode Colors */
+    --bg-primary: #0f172a;
+    --bg-secondary: #1e293b;
+    --bg-tertiary: #334155;
+    --text-primary: #f1f5f9;
+    --text-secondary: #cbd5e1;
+    --border-color: #334155;
+    --shadow: 0 1px 3px rgba(0, 0, 0, 0.3);
+    --shadow-md: 0 4px 6px rgba(0, 0, 0, 0.3);
+    --shadow-lg: 0 10px 25px rgba(0, 0, 0, 0.4);
+    
+    --header-bg: linear-gradient(135deg, #4f46e5 0%, #7c3aed 100%);
 }
 
 body {
     font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
         'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
         sans-serif;
-    background: linear-gradient(135deg, var(--dark-bg) 0%, #1e3a8a 100%);
+    background: var(--bg-secondary);
     color: var(--text-primary);
     min-height: 100vh;
     display: flex;
     flex-direction: column;
+    transition: background-color 0.3s ease, color 0.3s ease;
 }
 
 .container {
@@ -39,25 +60,99 @@ body {
 }
 
 header {
-    background: linear-gradient(135deg, var(--primary-color) 0%, var(--secondary-color) 100%);
-    border-radius: 16px;
-    padding: 40px 20px;
-    margin-bottom: 40px;
+    background: var(--header-bg);
+    border-radius: 20px;
+    padding: 50px 40px;
+    margin-bottom: 50px;
     box-shadow: var(--shadow-lg);
     color: white;
-    text-align: center;
+    position: relative;
+    overflow: hidden;
+}
+
+header::before {
+    content: '';
+    position: absolute;
+    top: -50%;
+    right: -10%;
+    width: 300px;
+    height: 300px;
+    background: radial-gradient(circle, rgba(255,255,255,0.1) 0%, transparent 70%);
+    border-radius: 50%;
+    pointer-events: none;
+}
+
+.header-top {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    position: relative;
+    z-index: 1;
+}
+
+.header-content {
+    flex: 1;
 }
 
 .header-content h1 {
-    font-size: 2.5em;
-    margin-bottom: 10px;
-    font-weight: 700;
+    font-size: 2.8em;
+    margin-bottom: 12px;
+    font-weight: 800;
+    letter-spacing: -1px;
 }
 
 .header-content p {
-    font-size: 1.1em;
+    font-size: 1.15em;
     opacity: 0.95;
     font-weight: 300;
+    line-height: 1.5;
+}
+
+.theme-toggle {
+    background: rgba(255, 255, 255, 0.2);
+    border: 2px solid rgba(255, 255, 255, 0.3);
+    border-radius: 12px;
+    width: 50px;
+    height: 50px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: white;
+    transition: all 0.3s ease;
+    position: relative;
+}
+
+.theme-toggle:hover {
+    background: rgba(255, 255, 255, 0.3);
+    border-color: rgba(255, 255, 255, 0.5);
+}
+
+.theme-toggle svg {
+    width: 24px;
+    height: 24px;
+    position: absolute;
+    transition: opacity 0.3s ease, transform 0.3s ease;
+}
+
+.sun-icon {
+    opacity: 1;
+    transform: rotate(0deg);
+}
+
+.moon-icon {
+    opacity: 0;
+    transform: rotate(-180deg);
+}
+
+body.dark-mode .sun-icon {
+    opacity: 0;
+    transform: rotate(180deg);
+}
+
+body.dark-mode .moon-icon {
+    opacity: 1;
+    transform: rotate(0deg);
 }
 
 main {
@@ -69,44 +164,52 @@ main {
 }
 
 .upload-box {
-    background: var(--card-bg);
+    background: var(--bg-primary);
     border: 2px dashed var(--primary-color);
-    border-radius: 16px;
+    border-radius: 20px;
     padding: 60px 40px;
     text-align: center;
     transition: all 0.3s ease;
     cursor: pointer;
-    box-shadow: var(--shadow);
+    box-shadow: var(--shadow-md);
 }
 
 .upload-box:hover {
     border-color: var(--secondary-color);
     box-shadow: var(--shadow-lg);
-    transform: translateY(-2px);
+    transform: translateY(-4px);
+    background: var(--bg-secondary);
 }
 
 .upload-box.dragover {
-    background: var(--light-bg);
+    background: var(--bg-tertiary);
     border-color: var(--secondary-color);
+    transform: scale(1.02);
 }
 
 .upload-icon {
-    width: 60px;
-    height: 60px;
+    width: 70px;
+    height: 70px;
     color: var(--primary-color);
     margin-bottom: 20px;
+    transition: transform 0.3s ease;
+}
+
+.upload-box:hover .upload-icon {
+    transform: translateY(-8px);
 }
 
 .upload-box h2 {
-    font-size: 1.5em;
+    font-size: 1.8em;
     color: var(--text-primary);
     margin-bottom: 10px;
+    font-weight: 600;
 }
 
 .upload-box p {
     color: var(--text-secondary);
-    margin-bottom: 20px;
-    font-size: 1em;
+    margin-bottom: 25px;
+    font-size: 1.05em;
 }
 
 .file-info {
@@ -118,41 +221,45 @@ main {
 
 .btn-primary,
 .btn-secondary {
-    padding: 12px 30px;
+    padding: 14px 36px;
     border: none;
-    border-radius: 8px;
+    border-radius: 12px;
     font-size: 1em;
     font-weight: 600;
     cursor: pointer;
     transition: all 0.3s ease;
     display: inline-block;
+    letter-spacing: 0.5px;
 }
 
 .btn-primary {
     background: linear-gradient(135deg, var(--primary-color) 0%, var(--secondary-color) 100%);
     color: white;
-    box-shadow: 0 2px 8px rgba(99, 102, 241, 0.3);
+    box-shadow: 0 4px 15px rgba(99, 102, 241, 0.4);
 }
 
 .btn-primary:hover {
-    transform: translateY(-2px);
-    box-shadow: 0 4px 16px rgba(99, 102, 241, 0.5);
+    transform: translateY(-3px);
+    box-shadow: 0 8px 20px rgba(99, 102, 241, 0.5);
 }
 
 .btn-primary:active {
-    transform: translateY(0);
+    transform: translateY(-1px);
 }
 
 .btn-secondary {
-    background: var(--light-bg);
+    background: var(--bg-secondary);
     color: var(--primary-color);
     border: 2px solid var(--primary-color);
     margin-top: 30px;
+    box-shadow: var(--shadow-md);
 }
 
 .btn-secondary:hover {
     background: var(--primary-color);
     color: white;
+    transform: translateY(-3px);
+    box-shadow: var(--shadow-lg);
 }
 
 .results-section {
@@ -166,7 +273,7 @@ main {
 @keyframes slideIn {
     from {
         opacity: 0;
-        transform: translateY(20px);
+        transform: translateY(30px);
     }
     to {
         opacity: 1;
@@ -175,27 +282,29 @@ main {
 }
 
 .score-card {
-    background: var(--card-bg);
-    border-radius: 16px;
-    padding: 40px;
+    background: var(--bg-primary);
+    border-radius: 20px;
+    padding: 50px 40px;
     margin-bottom: 30px;
     box-shadow: var(--shadow-lg);
     text-align: center;
+    border: 1px solid var(--border-color);
 }
 
 .score-container {
     position: relative;
-    width: 150px;
-    height: 150px;
-    margin: 0 auto 20px;
+    width: 160px;
+    height: 160px;
+    margin: 0 auto 30px;
 }
 
 .progress-ring {
     transform: rotate(-90deg);
+    filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.1));
 }
 
 .progress-ring-circle {
-    transition: stroke-dashoffset 0.5s ease;
+    transition: stroke-dashoffset 0.6s ease;
     fill: none;
     stroke: var(--border-color);
     stroke-width: 8;
@@ -218,69 +327,75 @@ main {
 }
 
 .score-number {
-    font-size: 3em;
-    font-weight: 700;
+    font-size: 3.5em;
+    font-weight: 800;
     color: var(--primary-color);
 }
 
 .score-percent {
-    font-size: 1.5em;
+    font-size: 1.8em;
     color: var(--text-secondary);
     font-weight: 600;
 }
 
 .score-card h3 {
-    font-size: 1.5em;
+    font-size: 1.6em;
     color: var(--text-primary);
     margin-bottom: 15px;
+    font-weight: 600;
 }
 
 .score-message {
     color: var(--text-secondary);
-    font-size: 1.05em;
+    font-size: 1.08em;
     line-height: 1.6;
+    font-weight: 500;
 }
 
 .skills-card {
-    background: var(--card-bg);
-    border-radius: 16px;
+    background: var(--bg-primary);
+    border-radius: 20px;
     padding: 40px;
     margin-bottom: 30px;
     box-shadow: var(--shadow-lg);
+    border: 1px solid var(--border-color);
 }
 
 .skills-card h3 {
-    font-size: 1.5em;
+    font-size: 1.6em;
     color: var(--text-primary);
-    margin-bottom: 25px;
+    margin-bottom: 30px;
+    font-weight: 600;
 }
 
 .skills-list {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+    grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
     gap: 15px;
 }
 
 .skill-tag {
     background: linear-gradient(135deg, var(--primary-color) 0%, var(--secondary-color) 100%);
     color: white;
-    padding: 12px 20px;
-    border-radius: 8px;
+    padding: 14px 24px;
+    border-radius: 12px;
     text-align: center;
     font-weight: 600;
-    box-shadow: var(--shadow);
-    animation: popIn 0.3s ease;
-    transition: transform 0.2s ease;
+    box-shadow: var(--shadow-md);
+    animation: popIn 0.4s ease;
+    transition: all 0.3s ease;
+    font-size: 0.95em;
 }
 
 .skill-tag:hover {
-    transform: scale(1.05);
+    transform: translateY(-4px);
+    box-shadow: var(--shadow-lg);
 }
 
 @keyframes popIn {
     from {
         opacity: 0;
-        transform: scale(0.8);
+        transform: scale(0.7);
     }
     to {
         opacity: 1;
@@ -290,20 +405,22 @@ main {
 
 .empty-skills {
     text-align: center;
-    padding: 30px;
+    padding: 40px 20px;
     color: var(--text-secondary);
+    font-size: 1.05em;
 }
 
 .error-message {
-    background: #fee2e2;
+    background: rgba(239, 68, 68, 0.1);
     color: var(--danger-color);
-    padding: 20px;
-    border-radius: 8px;
+    padding: 20px 24px;
+    border-radius: 12px;
     margin-bottom: 20px;
     border-left: 4px solid var(--danger-color);
     display: flex;
     align-items: center;
-    gap: 10px;
+    gap: 12px;
+    font-weight: 500;
 }
 
 .error-message.hidden {
@@ -313,7 +430,186 @@ main {
 .error-message::before {
     content: "⚠️";
     font-size: 1.5em;
+    flex-shrink: 0;
 }
+
+footer {
+    text-align: center;
+    padding: 40px 20px;
+    color: var(--text-secondary);
+    border-top: 1px solid var(--border-color);
+    margin-top: 50px;
+    font-size: 0.95em;
+}
+
+/* Loading state */
+.loading {
+    display: inline-block;
+    width: 24px;
+    height: 24px;
+    border: 3px solid var(--border-color);
+    border-top: 3px solid var(--primary-color);
+    border-radius: 50%;
+    animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+    header {
+        padding: 35px 25px;
+        margin-bottom: 35px;
+    }
+
+    .header-top {
+        flex-direction: column;
+        gap: 20px;
+    }
+
+    .header-content h1 {
+        font-size: 2em;
+    }
+
+    .header-content p {
+        font-size: 1em;
+    }
+
+    .theme-toggle {
+        align-self: flex-start;
+    }
+
+    .upload-box {
+        padding: 40px 25px;
+    }
+
+    .upload-icon {
+        width: 55px;
+        height: 55px;
+    }
+
+    .upload-box h2 {
+        font-size: 1.4em;
+    }
+
+    .score-card,
+    .skills-card {
+        padding: 30px 25px;
+    }
+
+    .score-card {
+        padding: 35px 25px;
+    }
+
+    .score-number {
+        font-size: 2.8em;
+    }
+
+    .score-card h3,
+    .skills-card h3 {
+        font-size: 1.3em;
+    }
+
+    .skills-list {
+        grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+        gap: 12px;
+    }
+
+    .skill-tag {
+        padding: 12px 20px;
+        font-size: 0.9em;
+    }
+}
+
+@media (max-width: 480px) {
+    .container {
+        padding: 12px;
+    }
+
+    header {
+        padding: 25px 15px;
+        margin-bottom: 25px;
+        border-radius: 16px;
+    }
+
+    .header-content h1 {
+        font-size: 1.6em;
+    }
+
+    .header-content p {
+        font-size: 0.9em;
+    }
+
+    .upload-box {
+        padding: 30px 15px;
+        border-radius: 16px;
+    }
+
+    .upload-box h2 {
+        font-size: 1.2em;
+    }
+
+    .upload-box p {
+        font-size: 0.95em;
+    }
+
+    .upload-icon {
+        width: 45px;
+        height: 45px;
+        margin-bottom: 15px;
+    }
+
+    .btn-primary,
+    .btn-secondary {
+        padding: 12px 28px;
+        font-size: 0.95em;
+    }
+
+    .score-card,
+    .skills-card {
+        padding: 25px 15px;
+        border-radius: 16px;
+    }
+
+    .score-container {
+        width: 130px;
+        height: 130px;
+        margin-bottom: 20px;
+    }
+
+    .score-number {
+        font-size: 2.2em;
+    }
+
+    .score-card h3,
+    .skills-card h3 {
+        font-size: 1.1em;
+        margin-bottom: 20px;
+    }
+
+    .skills-list {
+        grid-template-columns: repeat(auto-fit, minmax(110px, 1fr));
+        gap: 10px;
+    }
+
+    .skill-tag {
+        padding: 10px 16px;
+        font-size: 0.85em;
+    }
+
+    footer {
+        padding: 25px 15px;
+        font-size: 0.85em;
+    }
+}
+.error-message::before {
+    content: "⚠️";
+    font-size: 1.5em;
+}
+
 
 footer {
     text-align: center;

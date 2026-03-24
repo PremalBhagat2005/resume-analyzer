@@ -1,7 +1,36 @@
 const uploadBox = document.getElementById('uploadBox');
-const fileInput = document.getElementById('fileInput');
 const resultsSection = document.getElementById('results');
 const errorDiv = document.getElementById('error');
+const themeToggle = document.getElementById('themeToggle');
+
+// Theme Toggle
+function initializeTheme() {
+    const savedTheme = localStorage.getItem('theme') || 'light';
+    if (savedTheme === 'dark') {
+        document.body.classList.add('dark-mode');
+    }
+}
+
+themeToggle.addEventListener('click', () => {
+    document.body.classList.toggle('dark-mode');
+    const isDarkMode = document.body.classList.contains('dark-mode');
+    localStorage.setItem('theme', isDarkMode ? 'dark' : 'light');
+});
+
+initializeTheme();
+
+// Delegate event handlers - don't cache fileInput reference
+function getFileInput() {
+    return document.getElementById('fileInput');
+}
+
+function attachFileInputListener() {
+    const fileInput = getFileInput();
+    if (fileInput) {
+        fileInput.removeEventListener('change', handleFileSelect);
+        fileInput.addEventListener('change', handleFileSelect);
+    }
+}
 
 // Drag and drop functionality
 uploadBox.addEventListener('dragover', (e) => {
@@ -19,15 +48,17 @@ uploadBox.addEventListener('drop', (e) => {
     
     const files = e.dataTransfer.files;
     if (files.length > 0) {
+        const fileInput = getFileInput();
         fileInput.files = files;
         handleFileSelect();
     }
 });
 
-// File input change event
-fileInput.addEventListener('change', handleFileSelect);
+// File input change event - attach to new instances
+attachFileInputListener();
 
 function handleFileSelect() {
+    const fileInput = getFileInput();
     const file = fileInput.files[0];
     if (file && file.type === 'application/pdf') {
         document.getElementById('fileName').textContent = `✓ ${file.name}`;
@@ -66,8 +97,6 @@ function analyzeResume(file) {
 }
 
 function displayResults(data) {
-    const resultsSection = document.getElementById('results');
-    
     // Update score
     const scoreValue = document.getElementById('scoreValue');
     scoreValue.textContent = Math.round(data.score);
@@ -107,7 +136,6 @@ function showError(message) {
 }
 
 function resetAnalyzer() {
-    fileInput.value = '';
     document.getElementById('fileName').textContent = '';
     resultsSection.classList.add('hidden');
     errorDiv.classList.add('hidden');
@@ -126,14 +154,16 @@ function resetAnalyzer() {
         <p class="file-info" id="fileName"></p>
     `;
     
-    // Re-attach event listener to new file input
-    document.getElementById('fileInput').addEventListener('change', handleFileSelect);
+    // Re-attach listener to new file input
+    attachFileInputListener();
+    
     uploadBox.scrollIntoView({ behavior: 'smooth' });
 }
 
 // Click on upload box to trigger file input
 uploadBox.addEventListener('click', function(e) {
-    if (e.target !== fileInput) {
+    const fileInput = getFileInput();
+    if (e.target !== fileInput && e.target.closest('input') !== fileInput) {
         fileInput.click();
     }
 });

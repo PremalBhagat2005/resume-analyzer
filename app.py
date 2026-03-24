@@ -1,6 +1,6 @@
 from flask import Flask, render_template, request, jsonify
 from resume_parser import extract_text
-from skill import extract_skill
+from skill import extract_skill, skills_list
 from scorer import calculate_score
 import os
 
@@ -36,7 +36,7 @@ def analyze_resume():
         return jsonify({
             'skills': skills,
             'score': score,
-            'total_skills': 8,
+            'total_skills': len(skills_list),
             'message': '⚠️ Improve your resume by adding more relevant skills!' if score < 50 else '✅ Great resume! Keep it up!'
         })
     except Exception as e:
