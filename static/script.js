@@ -148,7 +148,7 @@ function resetAnalyzer() {
         <h2>Upload Your Resume</h2>
         <p>Drag and drop your PDF or click to browse</p>
         <input type="file" id="fileInput" accept=".pdf" hidden>
-        <button class="btn-primary" onclick="document.getElementById('fileInput').click()">
+        <button class="btn-primary" onclick="document.getElementById('fileInput').click(); event.stopPropagation();">
             Choose File
         </button>
         <p class="file-info" id="fileName"></p>
