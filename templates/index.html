@@ -3,19 +3,28 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>AI Resume Analyzer</title>
+    <meta name="description" content="AI-powered resume analyzer with ATS scoring and skill detection">
+    <meta name="theme-color" content="#6366f1">
+    <title>AI Resume Analyzer - Optimize Your Resume</title>
     <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
 </head>
 <body>
+    <a href="#main-content" class="skip-to-main">Skip to main content</a>
+    
     <div class="container">
-        <header>
+        <header role="banner">
             <div class="header-top">
                 <div class="header-content">
                     <h1>📄 AI Resume Analyzer</h1>
                     <p>Optimize your resume with ATS scoring and skill detection</p>
                 </div>
-                <button class="theme-toggle" id="themeToggle" title="Toggle dark mode">
-                    <svg class="sun-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <button 
+                    class="theme-toggle" 
+                    id="themeToggle" 
+                    title="Toggle dark mode"
+                    aria-label="Toggle dark mode"
+                    aria-pressed="false">
+                    <svg class="sun-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
                         <circle cx="12" cy="12" r="5"></circle>
                         <line x1="12" y1="1" x2="12" y2="3"></line>
                         <line x1="12" y1="21" x2="12" y2="23"></line>
@@ -26,69 +35,148 @@
                         <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
                         <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
                     </svg>
-                    <svg class="moon-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <svg class="moon-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
                         <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
                     </svg>
                 </button>
             </div>
         </header>
 
-        <main>
-            <div class="upload-section">
-                <div class="upload-box" id="uploadBox">
-                    <svg class="upload-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+        <main id="main-content" role="main">
+            <section class="upload-section" aria-labelledby="upload-title">
+                <div 
+                    class="upload-box" 
+                    id="uploadBox"
+                    role="region"
+                    aria-label="Resume upload dropzone">
+                    <svg class="upload-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
                         <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
                         <polyline points="17 8 12 3 7 8"></polyline>
                         <line x1="12" y1="3" x2="12" y2="15"></line>
                     </svg>
-                    <h2>Upload Your Resume</h2>
+                    <h2 id="upload-title">Upload Your Resume</h2>
                     <p>Drag and drop your PDF or click to browse</p>
-                    <input type="file" id="fileInput" accept=".pdf" hidden>
-                    <button class="btn-primary" onclick="document.getElementById('fileInput').click(); event.stopPropagation();">
+                    <input 
+                        type="file" 
+                        id="fileInput" 
+                        accept=".pdf" 
+                        hidden
+                        aria-label="Select PDF resume file">
+                    <button 
+                        class="btn-primary" 
+                        id="chooseFileBtn"
+                        title="Select a PDF file to analyze">
                         Choose File
                     </button>
-                    <p class="file-info" id="fileName"></p>
+                    <p class="file-info" id="fileName" aria-live="polite" aria-atomic="true"></p>
                 </div>
-            </div>
+            </section>
 
-            <div id="results" class="results-section hidden">
-                <div class="score-card">
+            <section class="job-description-section" aria-labelledby="jd-title">
+                <h3 id="jd-title">📋 Optional: Paste Job Description</h3>
+                <p class="jd-helper-text">For better ATS alignment scoring, provide the job description you're applying for</p>
+                <textarea 
+                    id="jobDescription" 
+                    class="job-description-input"
+                    placeholder="Paste job description here for more accurate ATS scoring..."
+                    rows="6"
+                    aria-label="Job description for ATS matching"></textarea>
+                <p class="char-count" id="charCount">0 characters</p>
+            </section>
+
+            <div id="error" class="error-message hidden" role="alert" aria-live="assertive"></div>
+
+            <section id="results" class="results-section hidden" aria-labelledby="results-title">
+                <h2 id="results-title" style="display: none;">Analysis Results</h2>
+                
+                <!-- ATS Score Card -->
+                <article class="score-card" aria-labelledby="ats-score-heading">
                     <div class="score-container">
-                        <svg class="progress-ring" width="120" height="120">
-                            <defs>
-                                <linearGradient id="gradient" x1="0%" y1="0%" x2="100%" y2="100%">
-                                    <stop offset="0%" style="stop-color:#6366f1;stop-opacity:1" />
-                                    <stop offset="100%" style="stop-color:#8b5cf6;stop-opacity:1" />
-                                </linearGradient>
-                            </defs>
-                            <circle class="progress-ring-circle" cx="60" cy="60" r="54" />
+                        <svg class="progress-ring" width="200" height="200" viewBox="0 0 200 200" role="img" aria-label="ATS score visualization">
+                            <circle class="progress-ring-track" cx="100" cy="100" r="80" stroke-linecap="round" />
+                            <circle class="progress-ring-circle" cx="100" cy="100" r="80" stroke-linecap="round" />
                         </svg>
                         <div class="score-text">
-                            <span id="scoreValue" class="score-number">0</span>
-                            <span class="score-percent">%</span>
+                            <span id="scoreValue" class="score-number" aria-label="ATS score">0</span><span class="score-percent">%</span>
                         </div>
                     </div>
-                    <h3>ATS Score</h3>
+                    
+                    <h4 class="score-label">ATS Score</h4>
+                    
+                    <div id="scoreGradeBadge" class="score-badge">
+                        <span id="gradeLetter" class="badge-grade">-</span>
+                        <span class="badge-separator">·</span>
+                        <span id="gradeStatus" class="badge-status">-</span>
+                    </div>
+                    
                     <p id="scoreMessage" class="score-message"></p>
+                </article>
+
+                <!-- Factor Breakdown -->
+                <article class="factors-card" aria-labelledby="factors-heading">
+                    <h3 id="factors-heading">📊 Scoring Breakdown</h3>
+                    <div id="factorsList" class="factors-list" role="region" aria-label="Detailed factor scores"></div>
+                </article>
+
+                <!-- Strengths Card -->
+                <article class="strengths-card" aria-labelledby="strengths-heading">
+                    <h3 id="strengths-heading">✅ Key Strengths</h3>
+                    <div id="strengthsList" class="strengths-list" role="list" aria-label="Resume strengths"></div>
+                </article>
+
+                <!-- Missing Keywords Card -->
+                <article class="missing-card" aria-labelledby="missing-heading">
+                    <h3 id="missing-heading">⚠️ Top Missing Keywords</h3>
+                    <p class="missing-helper">Add these keywords to improve your ATS score</p>
+                    <div id="missingList" class="missing-list" role="list" aria-label="Missing keywords"></div>
+                </article>
+
+                <!-- Suggestions Card -->
+                <article class="suggestions-card" aria-labelledby="suggestions-heading">
+                    <h3 id="suggestions-heading">💡 Actionable Suggestions</h3>
+                    <div id="suggestionsList" class="suggestions-list" role="region" aria-label="Improvement suggestions"></div>
+                </article>
+
+                <!-- Skills Card (Legacy) -->
+                <article class="skills-card" aria-labelledby="skills-heading">
+                    <h3 id="skills-heading">🎯 Detected Skills</h3>
+                    <div id="skillsList" class="skills-list" role="list" aria-label="List of detected resume skills"></div>
+                </article>
+
+                <!-- Warnings -->
+                <div id="warningsContainer" class="warnings-container hidden" role="region" aria-label="Resume quality warnings">
+                    <h4>⚠️ Warnings</h4>
+                    <div id="warningsList"></div>
                 </div>
 
-                <div class="skills-card">
-                    <h3>✅ Detected Skills</h3>
-                    <div id="skillsList" class="skills-list"></div>
-                </div>
-
-                <button class="btn-secondary" onclick="resetAnalyzer()">
+                <button class="btn-secondary" id="resetBtn" title="Upload and analyze another resume">
                     Analyze Another Resume
                 </button>
-            </div>
-
-            <div id="error" class="error-message hidden"></div>
+            </section>
         </main>
 
-        <footer>
+        <footer role="contentinfo">
             <p>&copy; 2026 AI Resume Analyzer | Optimize Your Career Path</p>
         </footer>
     </div>
+
+    <style>
+        /* Skip link for keyboard accessibility */
+        .skip-to-main {
+            position: absolute;
+            top: -40px;
+            left: 0;
+            background: var(--primary-color);
+            color: white;
+            padding: 8px;
+            text-decoration: none;
+            z-index: 100;
+        }
+
+        .skip-to-main:focus {
+            top: 0;
+        }
+    </style>
 
     <script src="{{ url_for('static', filename='script.js') }}"></script>
 </body>
