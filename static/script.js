@@ -1,15 +1,11 @@
-// ============================================================================
-// STATE MANAGEMENT
-// ============================================================================
+// State management
 const appState = {
     currentAbortController: null,
     isAnalyzing: false,
     analysisStartTime: null
 };
 
-// ============================================================================
-// DOM ELEMENTS & INITIALIZATION
-// ============================================================================
+// DOM elements & initialization
 const uploadBox = document.getElementById('uploadBox');
 const resultsSection = document.getElementById('results');
 const errorDiv = document.getElementById('error');
@@ -37,9 +33,7 @@ function initializeTheme() {
 
 initializeTheme();
 
-// ============================================================================
-// FILE INPUT MANAGEMENT
-// ============================================================================
+// File input management
 
 /**
  * Get file input element (used to avoid stale closures)
@@ -120,9 +114,6 @@ function handleFileSelect() {
     }
 }
 
-// ============================================================================
-// DRAG & DROP FUNCTIONALITY
-// ============================================================================
 
 /**
  * Setup drag and drop event listeners
@@ -171,9 +162,6 @@ function setupDragAndDrop() {
 
 setupDragAndDrop();
 
-// ============================================================================
-// FILE UPLOAD & ANALYSIS
-// ============================================================================
 
 /**
  * Analyze resume by uploading to backend API
@@ -270,9 +258,7 @@ async function analyzeResume(file) {
     }
 }
 
-// ============================================================================
-// RESULTS DISPLAY
-// ============================================================================
+// Results display
 
 /**
  * Helper function to calculate letter grade from numeric score
@@ -714,9 +700,6 @@ function displayWarnings(warnings) {
     }
 }
 
-// ============================================================================
-// ERROR HANDLING
-// ============================================================================
 
 /**
  * Display error message to user
@@ -734,9 +717,6 @@ function showError(message) {
     }
 }
 
-// ============================================================================
-// RESET & CLEANUP
-// ============================================================================
 
 /**
  * Reset analyzer to initial state and clear all data
@@ -808,10 +788,6 @@ function resetAnalyzer() {
         showError('❌ Error resetting form. Please refresh the page.');
     }
 }
-
-// ============================================================================
-// EVENT LISTENERS & INITIALIZATION
-// ============================================================================
 
 /**
  * Delegate file selection to upload box click

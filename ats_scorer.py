@@ -1,17 +1,6 @@
 """
-Advanced ATS (Applicant Tracking System) Scoring Module
-Implements a comprehensive, multi-factor scoring algorithm that mimics real ATS behavior.
-
-Scoring Factors:
-1. Keyword Match (30%) - Job description keyword alignment
-2. Skills Alignment (25%) - Hard/soft skills analysis
-3. Job Title & Seniority (15%) - Role and experience level matching
-4. Education & Certifications (10%) - Degree and certification verification
-5. Experience Years (10%) - Total experience matching
-6. Resume Formatting (10%) - ATS parseability and structure
-
-Author: Resume Analyzer
-Date: 2026-03-29
+ATS scoring engine - calculates match between resume and job description
+based on 6 factors: keywords, skills, seniority, education, experience, formatting
 """
 
 import re
@@ -22,9 +11,7 @@ from collections import Counter
 
 logger = logging.getLogger(__name__)
 
-# ============================================================================
-# DATA CLASSES
-# ============================================================================
+# Data classes for results
 
 @dataclass
 class FactorScore:
@@ -70,9 +57,7 @@ class ATSScoreResult:
         }
 
 
-# ============================================================================
-# SKILL TAXONOMIES & MAPPINGS
-# ============================================================================
+# Skill lists
 
 # Hard Skills Categories
 HARD_SKILLS = {
@@ -149,20 +134,11 @@ FILLER_WORDS = {
 }
 
 
-# ============================================================================
-# FACTOR 1: KEYWORD MATCH (30%)
-# ============================================================================
+# Factor 1: Keyword Match (30%)
 
 def extract_keywords_from_jd(job_description: str, weight_by_position: bool = True) -> Dict[str, Tuple[float, List[str]]]:
     """
     Extract keywords from job description with position weighting.
-    
-    Args:
-        job_description: Raw job description text
-        weight_by_position: Whether to apply position-based weighting
-        
-    Returns:
-        Dictionary of keywords with weights and positions
     """
     try:
         if not job_description or len(job_description) < 50:
@@ -217,19 +193,7 @@ def extract_keywords_from_jd(job_description: str, weight_by_position: bool = Tr
 
 def calculate_keyword_match(resume_text: str, job_keywords: Dict[str, Tuple[float, List[str]]]) -> FactorScore:
     """
-    FACTOR 1: Calculate keyword matching score (30% weight).
-    
-    - Exact matches receive full weight
-    - Partial matches receive reduced weight
-    - Frequency matters (multiple mentions = better score)
-    - Penalizes keyword stuffing
-    
-    Args:
-        resume_text: Extracted resume text
-        job_keywords: Keywords from job description with weights
-        
-    Returns:
-        FactorScore with keyword match analysis
+    Calculates keyword matching score (Factor 1: 30% weight).
     """
     try:
         if not job_keywords:
@@ -289,9 +253,7 @@ def calculate_keyword_match(resume_text: str, job_keywords: Dict[str, Tuple[floa
         )
 
 
-# ============================================================================
-# FACTOR 2: SKILLS ALIGNMENT (25%)
-# ============================================================================
+# Factor 2: Skills Alignment (25%)
 
 def extract_skills_from_resume(resume_text: str) -> Tuple[List[str], List[str]]:
     """
@@ -320,18 +282,7 @@ def extract_skills_from_resume(resume_text: str) -> Tuple[List[str], List[str]]:
 
 def calculate_skills_alignment(resume_text: str, job_keywords: Dict[str, Tuple[float, List[str]]]) -> FactorScore:
     """
-    FACTOR 2: Calculate skills alignment score (25% weight).
-    
-    - Hard skills weighted more heavily than soft skills
-    - Identifies missing critical skills
-    - Analyzes skill depth (number of related skills)
-    
-    Args:
-        resume_text: Extracted resume text
-        job_keywords: Keywords from job description
-        
-    Returns:
-        FactorScore with skills analysis
+    Calculates skills alignment score (Factor 2: 25% weight).
     """
     try:
         hard_skills, soft_skills = extract_skills_from_resume(resume_text)
@@ -383,9 +334,6 @@ def calculate_skills_alignment(resume_text: str, job_keywords: Dict[str, Tuple[f
         )
 
 
-# ============================================================================
-# FACTOR 3: JOB TITLE & SENIORITY (15%)
-# ============================================================================
 
 def extract_job_titles_and_seniority(resume_text: str) -> Tuple[List[str], str]:
     """
@@ -408,14 +356,7 @@ def extract_job_titles_and_seniority(resume_text: str) -> Tuple[List[str], str]:
 
 def calculate_seniority_match(resume_text: str, job_keywords: Dict[str, Tuple[float, List[str]]]) -> FactorScore:
     """
-    FACTOR 3: Calculate job title & seniority match score (15% weight).
-    
-    Args:
-        resume_text: Extracted resume text
-        job_keywords: Keywords from job description
-        
-    Returns:
-        FactorScore with seniority analysis
+    Calculates seniority and job title match (Factor 3: 15% weight).
     """
     try:
         job_titles, detected_seniority = extract_job_titles_and_seniority(resume_text)
@@ -475,19 +416,11 @@ def calculate_seniority_match(resume_text: str, job_keywords: Dict[str, Tuple[fl
         )
 
 
-# ============================================================================
-# FACTOR 4: EDUCATION & CERTIFICATIONS (10%)
-# ============================================================================
+# Factor 4: Education & Certifications (10%)
 
 def calculate_education_score(resume_text: str) -> FactorScore:
     """
-    FACTOR 4: Calculate education & certifications score (10% weight).
-    
-    Args:
-        resume_text: Extracted resume text
-        
-    Returns:
-        FactorScore with education analysis
+    Calculates education match score (Factor 4: 10% weight).
     """
     try:
         resume_lower = resume_text.lower()
@@ -540,9 +473,7 @@ def calculate_education_score(resume_text: str) -> FactorScore:
         )
 
 
-# ============================================================================
-# FACTOR 5: EXPERIENCE YEARS (10%)
-# ============================================================================
+# Factor 5: Experience Years (10%)
 
 def extract_years_of_experience(resume_text: str) -> float:
     """
@@ -571,14 +502,7 @@ def extract_years_of_experience(resume_text: str) -> float:
 
 def calculate_experience_score(resume_text: str, job_keywords: Dict[str, Tuple[float, List[str]]]) -> FactorScore:
     """
-    FACTOR 5: Calculate experience years match score (10% weight).
-    
-    Args:
-        resume_text: Extracted resume text
-        job_keywords: Keywords from job description
-        
-    Returns:
-        FactorScore with experience analysis
+    Calculates experience years match score (Factor 5: 10% weight).
     """
     try:
         detected_years = extract_years_of_experience(resume_text)
@@ -645,24 +569,11 @@ def calculate_experience_score(resume_text: str, job_keywords: Dict[str, Tuple[f
         )
 
 
-# ============================================================================
-# FACTOR 6: RESUME FORMATTING & PARSEABILITY (10%)
-# ============================================================================
+# Factor 6: Resume Formatting & Structure (10%)
 
 def calculate_formatting_score(resume_text: str) -> FactorScore:
     """
-    FACTOR 6: Calculate resume formatting & parseability score (10% weight).
-    
-    Detects:
-    - Standard sections (Summary, Experience, Education, Skills)
-    - ATS-unfriendly elements (tables, columns, images)
-    - Contact information
-    
-    Args:
-        resume_text: Extracted resume text
-        
-    Returns:
-        FactorScore with formatting analysis
+    Calculates resume formatting and structure score (Factor 6: 10% weight).
     """
     try:
         formatting_score = 50.0  # Base score
@@ -730,9 +641,7 @@ def calculate_formatting_score(resume_text: str) -> FactorScore:
         )
 
 
-# ============================================================================
-# MAIN SCORING FUNCTION
-# ============================================================================
+# Main scoring functions
 
 def calculate_ats_score(
     resume_text: str,
@@ -841,9 +750,6 @@ def calculate_ats_score(
         )
 
 
-# ============================================================================
-# HELPER FUNCTIONS
-# ============================================================================
 
 def calculate_grade_and_classification(score: float) -> Tuple[str, str]:
     """Convert score to letter grade and classification"""

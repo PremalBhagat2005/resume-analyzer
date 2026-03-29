@@ -13,29 +13,7 @@ logger = logging.getLogger(__name__)
 
 
 def extract_text(file: Union[str, Path]) -> str:
-    """
-    Extract text from a PDF file using pdfplumber.
-    
-    This function opens a PDF file and extracts all text content from each page,
-    converts it to lowercase for consistent skill matching, and joins the content
-    with newlines to preserve structure.
-    
-    Args:
-        file: Path to the PDF file (str or Path object)
-        
-    Returns:
-        str: Extracted text converted to lowercase, with pages separated by newlines
-        
-    Raises:
-        FileNotFoundError: If the file doesn't exist
-        pdfplumber.exceptions.PDFException: If the file is not a valid PDF
-        ValueError: If the PDF is empty or contains no extractable text
-        
-    Example:
-        >>> text = extract_text('my_resume.pdf')
-        >>> print(len(text))
-        450
-    """
+    """Extracts text from PDF resume file, handles encrypted/damaged PDFs gracefully."""
     try:
         pages_text = []
         

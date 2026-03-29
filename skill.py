@@ -43,27 +43,7 @@ skills_list = [
 
 
 def extract_skill(text: str) -> List[str]:
-    """
-    Search for technical and professional skills in the provided text.
-    
-    Uses word boundary regex matching for accurate skill identification.
-    Matching is case-insensitive and returns only unique skills found.
-    
-    Args:
-        text (str): The text to search for skills (usually resume content)
-        
-    Returns:
-        List[str]: A list of detected skills with duplicates removed,
-                   sorted alphabetically for consistent output
-                   
-    Example:
-        >>> text = "I have 5 years of Python and React experience"
-        >>> skills = extract_skill(text)
-        >>> 'python' in skills
-        True
-        >>> 'react' in skills
-        True
-    """
+    """Finds all technical skills mentioned in the text."""
     try:
         # Convert input text to lowercase for case-insensitive matching
         text_lower = text.lower()
@@ -94,26 +74,7 @@ def extract_skill(text: str) -> List[str]:
 
 
 def categorize_skills(skills: List[str]) -> Dict[str, List[str]]:
-    """
-    Organize skills into semantic categories for better presentation.
-    
-    This helps recruiters and job seekers understand which skill categories
-    are represented in the resume and identify gaps.
-    
-    Args:
-        skills (List[str]): List of skills to categorize
-        
-    Returns:
-        Dict[str, List[str]]: Dictionary with category names as keys
-                              and lists of skills as values. Empty categories
-                              are excluded from the result.
-                              
-    Example:
-        >>> skills = ['python', 'java', 'docker', 'leadership']
-        >>> categorized = categorize_skills(skills)
-        >>> categorized['Programming Languages']
-        ['java', 'python']
-    """
+    """Groups skills by category (languages, frameworks, databases, etc)."""
     try:
         # Define skill categories with their keywords for classification
         categories: Dict[str, List[str]] = {
@@ -171,25 +132,7 @@ def categorize_skills(skills: List[str]) -> Dict[str, List[str]]:
 
 
 def get_skill_recommendations(found_skills: List[str], category: str = "") -> List[str]:
-    """
-    Suggest missing skills based on found skills and selected category.
-    
-    Helps users identify complementary skills they should add to improve
-    their resume's relevance and competitiveness.
-    
-    Args:
-        found_skills (List[str]): Skills already found in resume
-        category (str, optional): Category to focus recommendations on
-        
-    Returns:
-        List[str]: List of recommended skills not yet present in resume
-        
-    Example:
-        >>> found = ['python', 'pandas']
-        >>> recommendations = get_skill_recommendations(found, 'Data Science & ML')
-        >>> 'tensorflow' in recommendations
-        True
-    """
+    """Returns recommended skills to add that aren't yet in the resume."""
     found_set = set(s.lower() for s in found_skills)
     
     if category:
@@ -209,13 +152,3 @@ def get_skill_recommendations(found_skills: List[str], category: str = "") -> Li
     logger.debug(f"Generated {len(recommendations)} skill recommendations")
     
     return recommendations
-    
-    # Calculate percentage score
-    percentage = (found_count / total_skills) * 100 if total_skills > 0 else 0
-    
-    # Return the score information as a dictionary
-    return {
-        "skills_found": found_count,
-        "total_skills_available": total_skills,
-        "percentage": round(percentage, 2)
-    }

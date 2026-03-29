@@ -4,77 +4,75 @@ A resume analyzer that actually tells you how well your resume stacks up against
 
 ## What It Does
 
-- **🎯 ATS Score** - Get a score out of 100 based on 6 factors that ATS systems actually care about
-- **📋 Job Description Matching** - Paste a job description to see how well your resume aligns with what employers are looking for
-- **📊 Factor Breakdown** - See exactly what's contributing to your score: keywords, skills, seniority, education, experience, and formatting
-- **⚠️ Missing Keywords** - Find out what key terms from the job description are missing in your resume
-- **💡 Smart Suggestions** - Get specific recommendations to improve each weak area
-- **🎨 Modern UI** - Dark/light mode, smooth animations, clean design that doesn't feel clunky
-- **⚡ Instant Results** - No waiting around, analysis happens fast
+- ATS Score out of 100 based on 6 factors that ATS systems actually care about
+- Paste a job description to see how well your resume aligns with what employers want
+- See exactly what's contributing to your score: keywords, skills, seniority, education, experience, and formatting
+- Find out what key terms from the job description are missing in your resume
+- Get specific recommendations to improve weak areas
+- Dark/light mode toggle, smooth animations, doesn't look clunky
+- Results show up instantly
 
 ## How to Run It
 
-**First time setup:**
+First time:
 ```bash
 cd resume-analyzer
 pip install -r requirements.txt
 ```
 
-**Start the app:**
+Then:
 ```bash
 python app.py
 ```
 
-Then open `http://localhost:5000` in your browser and upload a PDF resume.
+Open `http://localhost:5000` and upload a PDF resume.
 
 ## The ATS Scoring System
 
-Your score is calculated from:
-- **Keyword Match (30%)** - Does your resume contain relevant terms from the job description?
-- **Skills Alignment (25%)** - Do you have the technical skills being asked for?
-- **Seniority Level (15%)** - Do your years of experience match the role's level?
-- **Education (10%)** - Relevant degrees, certifications, etc.
-- **Experience (10%)** - Job titles, companies, years in field
-- **Formatting (10%)** - Clean structure, proper formatting
+Your score comes from:
+- Keyword Match (30%) - Does your resume have relevant terms from the job description?
+- Skills Alignment (25%) - Do you have the technical skills they're asking for?
+- Seniority Level (15%) - Do your years of experience match the role?
+- Education (10%) - Degrees, certifications, etc.
+- Experience (10%) - Job titles, companies, years in field
+- Formatting (10%) - Clean structure, proper formatting
 
-Even without a job description, you'll get an 8-12% baseline score just for having a properly formatted resume with detectable content.
+Without a job description, you still get 8-12% for having a properly formatted resume with content.
 
-## What's in the Code
+## What's in Here
 
 ```
 resume-analyzer/
-├── app.py              # Flask server that ties everything together
-├── ats_scorer.py       # The 6-factor scoring engine
+├── app.py              # Flask backend
+├── ats_scorer.py       # The 6-factor scoring
 ├── resume_parser.py    # Extracts text from PDFs
-├── skill.py            # Skill detection (Python, Java, SQL, etc.)
-├── scorer.py           # Legacy scoring (kept for reference)
+├── skill.py            # Skill detection
+├── scorer.py           # Legacy scoring
 ├── requirements.txt    # Dependencies
 ├── templates/
-│   └── index.html      # Main page - single page app
+│   └── index.html      # Main page
 └── static/
-    ├── script.js       # All the interactive bits
-    └── style.css       # Dark mode + animations
+    ├── script.js       # Frontend stuff
+    └── style.css       # Styling + animations
 ```
 
-## Project Structure Details
-
-**ats_scorer.py** - This is the real workhorse. It:
-- Extracts keywords from both resume and job description
-- Matches skills against hardcoded skill lists
-- Detects seniority level from keywords like "senior", "lead", "junior", etc.
-- Checks for education keywords (degree types, institution names)
+**ats_scorer.py** does the heavy lifting:
+- Extracts keywords from resume and job description
+- Matches skills against a hardcoded list
+- Detects seniority from keywords like "senior", "lead", "junior"
+- Checks for education keywords
 - Looks at work experience patterns
 - Evaluates formatting quality
 
-The scoring is weighted so keyword match has the biggest impact (makes sense - that's what ATS cares about most).
+Keyword match gets the highest weight because that's what ATS actually cares about most.
 
-**Frontend** - Built with vanilla JavaScript, no frameworks. It:
-- Uploads PDFs to Flask and gets back JSON results
-- Displays the circular progress ring that animates to your score
+**Frontend** is vanilla JavaScript (no frameworks):
+- Uploads PDFs and gets JSON results back
+- Renders the circular progress ring that animates to your score
 - Shows all 6 factors with color-coded ratings
-- Lists missing keywords with priority levels
-- Provides improvement suggestions organized by category
-- Lets you toggle dark/light mode
+- Lists missing keywords by priority
+- Provides suggestions organized by category
+- Dark/light mode toggle
 
 ## Detected Skills
 

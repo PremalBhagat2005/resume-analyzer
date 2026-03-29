@@ -11,38 +11,7 @@ logger = logging.getLogger(__name__)
 
 
 def calculate_score(found_skills: Set[str]) -> float:
-    """
-    Calculate the skill match score as a percentage based on detected skills.
-    
-    The score represents how many of the known skills from the skills database
-    are present in the resume. A higher score indicates better alignment with
-    typical job requirements.
-    
-    Scoring Formula:
-        score = (number of unique skills found / total unique skills in database) × 100
-    
-    Args:
-        found_skills (Set[str]): Set of unique skills detected in the resume
-        
-    Returns:
-        float: Score as a percentage (0-100), rounded to 2 decimal places
-        
-    Raises:
-        TypeError: If found_skills is not a set or list
-        
-    Example:
-        >>> found = {'python', 'react', 'docker'}
-        >>> score = calculate_score(found)
-        >>> 0 <= score <= 100
-        True
-        >>> type(score) == float
-        True
-    
-    Note:
-        - Empty resume text (no skills found) will return a score of 0.0
-        - A resume with all possible skills would score 100.0
-        - Scores are normalized to provide meaningful feedback to users
-    """
+    """Calculates skill match percentage (found skills / total skills * 100)."""
     try:
         # Validate input type
         if not isinstance(found_skills, (set, list)):
@@ -77,22 +46,7 @@ def calculate_score(found_skills: Set[str]) -> float:
 
 
 def get_score_feedback(score: float) -> str:
-    """
-    Generate human-readable feedback based on the calculated score.
-    
-    Provides encouraging or actionable feedback to help users improve their resume.
-    
-    Args:
-        score (float): The calculated ATS score (0-100)
-        
-    Returns:
-        str: Human-readable feedback message with emoji indicator
-        
-    Example:
-        >>> feedback = get_score_feedback(85)
-        >>> "Excellent" in feedback
-        True
-    """
+    """Returns encouraging feedback message based on skill score."""
     try:
         if score >= 80:
             return "✅ Excellent! Your resume has strong skill alignment."
