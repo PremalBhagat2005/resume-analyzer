@@ -1,5 +1,10 @@
 # AI Resume Analyzer
 
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](./LICENSE)
+[![Python 3.8+](https://img.shields.io/badge/Python-3.8+-blue.svg)](https://www.python.org/downloads/)
+[![Flask 2.3+](https://img.shields.io/badge/Flask-2.3+-green.svg)](https://flask.palletsprojects.com/)
+![Status: Active](https://img.shields.io/badge/Status-Active-brightgreen)
+
 A resume analyzer that actually tells you how well your resume stacks up against job descriptions. Upload a resume, optionally paste a job description, and get a detailed breakdown of your ATS score plus actionable feedback.
 
 ## Features
@@ -355,3 +360,34 @@ The system looks for 50+ hard skills across these categories:
 ## Browser Compatibility
 
 Works on any modern browser - Chrome, Firefox, Safari, Edge. The animations might be slightly smoother on newer versions but nothing fancy that would break on older browsers.
+
+---
+
+## 📝 License
+
+This project is licensed under the MIT License - see the [LICENSE](./LICENSE) file for details.
+
+## 🤝 Contributing
+
+Contributions are welcome! Please read our [CONTRIBUTING.md](./CONTRIBUTING.md) guide to get started.
+
+### Quick Contribution Steps:
+1. Fork the repo
+2. Create a feature branch (`git checkout -b feature/awesome-feature`)
+3. Commit changes (`git commit -m 'Add awesome feature'`)
+4. Push to branch (`git push origin feature/awesome-feature`)
+5. Open a Pull Request
+
+## 📋 Code of Conduct
+
+Please read our [CODE_OF_CONDUCT.md](./CODE_OF_CONDUCT.md) to understand our community standards.
+
+## 💬 Support & Feedback
+
+- Found a bug? [Open an issue](../../issues)
+- Have a suggestion? [Create a discussion](../../discussions)
+- Want to contribute? Check [CONTRIBUTING.md](./CONTRIBUTING.md)
+
+---
+
+**Made with ❤️ to help you beat ATS systems and land interviews**
