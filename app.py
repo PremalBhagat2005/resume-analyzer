@@ -1,16 +1,36 @@
 """
 AI Resume Analyzer - Flask Application
-Analyzes resumes for ATS scoring and skill detection using advanced multi-factor algorithms
+
+A comprehensive resume analysis tool that provides ATS scoring, keyword matching,
+skill alignment analysis, and actionable recommendations using advanced multi-factor
+algorithms. This application helps job seekers optimize their resumes for applicant
+tracking systems and improve their chances of interview callbacks.
+
+Features:
+    - 6-factor weighted ATS scoring system (0-100)
+    - Job description matching and alignment analysis
+    - Keyword extraction and gap identification
+    - Skill taxonomy alignment with ATS requirements
+    - Seniority level matching
+    - Educational credential scoring
+    - Professional experience assessment
+    - Actionable improvement recommendations
+    - Real-time processing with detailed feedback
+
+Author: Resume Analyzer Team
+License: MIT
 """
 
 from flask import Flask, render_template, request, jsonify
+from flask_cors import CORS
 from resume_parser import extract_text
 from ats_scorer import calculate_ats_score, extract_keywords_from_jd
 from skill import extract_skill, skills_list
 import os
 import logging
+from typing import Dict, Tuple, Any
 
-# Configure logging
+# Configure comprehensive logging
 logging.basicConfig(
     level=logging.INFO,
     format='%(asctime)s - %(name)s - %(levelname)s - %(message)s'

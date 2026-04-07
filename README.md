@@ -5,7 +5,7 @@
 [![Flask 2.3+](https://img.shields.io/badge/Flask-2.3+-green.svg)](https://flask.palletsprojects.com/)
 ![Status: Active](https://img.shields.io/badge/Status-Active-brightgreen)
 
-A resume analyzer that actually tells you how well your resume stacks up against job descriptions. Upload a resume, optionally paste a job description, and get a detailed breakdown of your ATS score plus actionable feedback.
+A powerful resume analyzer that tells you how well your resume stacks up against job descriptions. Upload a resume, paste a job description, and get a detailed breakdown of your ATS score with actionable, data-driven feedback to improve your chances of getting past applicant tracking systems.
 
 ## Features
 
