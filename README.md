@@ -7,6 +7,8 @@
 
 A powerful resume analyzer that tells you how well your resume stacks up against job descriptions. Upload a resume, paste a job description, and get a detailed breakdown of your ATS score with actionable, data-driven feedback to improve your chances of getting past applicant tracking systems.
 
+There is an updated version of it : https://github.com/PremalBhagat2005/Resume_analyserV2
+
 ## Features
 
 - **ATS Score (0-100)** - Comprehensive scoring based on 6 factors that ATS systems actually care about
